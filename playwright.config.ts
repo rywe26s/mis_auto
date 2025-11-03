@@ -5,7 +5,9 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ 
+  override: !process.env.CI 
+});
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
