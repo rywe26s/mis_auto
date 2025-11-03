@@ -4,11 +4,11 @@ import { parseRequestParams } from "../../utils/parsers";
 import { step, description, tags, severity, owner, attachment } from 'allure-js-commons';
 
 
-test.describe('Пациент', () => {
+test.describe('EXPERT', () => {
 
-  test('Консультации', async ({ patientSession }) => {
+  test('Проверка авторизации и получения консультаций', async ({ patientSession }) => {
 
-    await description('Этот тест проверяет что-то');
+    await description('Проверка авторизации и получения консультаций');
     await owner('Иван Иванов');
     await tags('smoke', 'auth');
     await severity('critical');
@@ -24,9 +24,9 @@ test.describe('Пациент', () => {
 
   })
 
-  test('Неуспешный', async () => {
+  test('Проверка падения', async () => {
 
-    await description('Этот тест просто падает');
+    await description('Проверка падения');
     await owner('Иван Орлов');
     await tags('smoke', 'auth');
     await severity('critical');
