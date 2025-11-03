@@ -1,3 +1,7 @@
+console.log('--- DEBUGGING CI VARIABLES ---');
+console.log('process.env.CI:', process.env.CI);
+console.log('process.env.BASE_URL (from env):', process.env.BASE_URL);
+console.log('-------------------------------');
 import { defineConfig, devices } from '@playwright/test';
 
 /**
