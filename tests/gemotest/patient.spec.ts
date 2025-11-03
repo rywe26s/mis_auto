@@ -22,6 +22,10 @@ test.describe('Пациент', () => {
       console.log(response)
     })
 
+    await step('3. Провальный тест', async () => {
+      expect(true).toBe(false);
+    });
+
   });
 
   test('Гость видит публичные новости', async ({ sshLogsRepo }) => {
