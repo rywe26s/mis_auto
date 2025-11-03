@@ -1,7 +1,3 @@
-console.log('--- DEBUGGING CI VARIABLES ---');
-console.log('process.env.CI:', process.env.CI);
-console.log('process.env.BASE_URL (from env):', process.env.BASE_URL);
-console.log('-------------------------------');
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -9,11 +5,7 @@ import { defineConfig, devices } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
-if (!process.env.CI) {
-  console.log('Running locally, loading .env file...');
-  dotenv.config();
-  console.log('process.env.BASE_URL (after dotenv):', process.env.BASE_URL);
-}
+dotenv.config();
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
