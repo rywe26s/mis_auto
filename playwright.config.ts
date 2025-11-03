@@ -52,7 +52,7 @@ export default defineConfig({
     // { name: 'setup', testMatch: /setup\/global\.setup\.ts/ },
 
     {
-      name: 'Интеграции с МИС',
+      name: 'Проверка интеграций с МИС',
       use: { ...devices['Desktop Chrome'] },
       //dependencies: ['setup'],
     },
