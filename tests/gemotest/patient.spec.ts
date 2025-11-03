@@ -8,7 +8,10 @@ test.describe('EXPERT', () => {
 
   test('Проверка авторизации и получения консультаций', async ({ patientSession }) => {
 
-    await description('Проверка авторизации и получения консультаций');
+    await description(`
+      1) Авторизоваться и перейти в список консультаций
+      2) Получается список консультаций через api`);
+
     await owner('Иван Иванов');
     await tags('smoke', 'auth');
     await severity('critical');
@@ -26,7 +29,8 @@ test.describe('EXPERT', () => {
 
   test('Проверка падения', async () => {
 
-    await description('Проверка падения');
+    await description(`1. Запустить провальный тест`);
+    
     await owner('Иван Орлов');
     await tags('smoke', 'auth');
     await severity('critical');
