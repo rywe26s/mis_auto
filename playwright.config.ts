@@ -10,7 +10,9 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 if (!process.env.CI) {
+  console.log('Running locally, loading .env file...');
   dotenv.config();
+  console.log('process.env.BASE_URL (after dotenv):', process.env.BASE_URL);
 }
 /**
  * See https://playwright.dev/docs/test-configuration.
