@@ -29,7 +29,7 @@ export default defineConfig({
       detail: true,
       suiteTitle: false,
       environmentInfo: {
-        NODE_VERSION: process.version,
+        //NODE_VERSION: process.version,
         OS: process.platform,
         // BROWSER: 'Chrome',
         // ENV: 'production'
