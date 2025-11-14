@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 if (!process.env.CI) {
   dotenv.config();
 }
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -20,7 +21,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list'],
@@ -53,7 +54,8 @@ export default defineConfig({
 
     {
       name: 'Проверка интеграций с МИС',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome']
+      },
       //dependencies: ['setup'],
     },
 

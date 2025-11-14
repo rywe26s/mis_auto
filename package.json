@@ -2,7 +2,22 @@
   "name": "mis_auto",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "type": "module",
+"scripts": {
+    "allure:clean": "rimraf allure-results",
+    "report:generate": "allure generate allure-results --clean -o allure-report",
+    "report:open": "allure open allure-report",
+
+    "generate:patients": "npx ts-node scripts/generate-patients.ts",
+    "generate:slots:gemotest": "cross-env DOCTOR_ID=42102 npx ts-node scripts/generate-slots.ts",
+    "generate:slots:all": "npm run generate:slots:gemotest && npm run generate:slots:invitro",
+
+    "test:gemotest": "npm run allure:clean && npm run generate:patients && npm run generate:slots:gemotest && npx playwright test tests/gemotest",
+    "test:gemotest:ui": "npm run allure:clean && npm run generate:patients && npm run generate:slots:gemotest && npx playwright test --headed tests/gemotest",
+
+    "test:all": "npm run allure:clean && npm run generate:patients && npm run generate:slots:all && npx playwright test",
+    "test:all:ui": "npm run allure:clean && npm run generate:patients && npm run generate:slots:all && npx playwright test --headed"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -10,10 +25,14 @@
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
     "@playwright/test": "^1.55.1",
+    "@types/axios": "^0.9.36",
     "@types/node": "^24.5.2",
     "@types/pg": "^8.15.5",
     "allure-playwright": "^3.4.2",
-    "dotenv": "^17.2.2"
+    "axios": "^1.13.2",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.2",
+    "rimraf": "^6.1.0"
   },
   "dependencies": {
     "pg": "^8.16.3",

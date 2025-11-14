@@ -1,0 +1,142 @@
+[
+  {
+    "phone": "79990955167",
+    "email": "test990955167@test.ru",
+    "password": "test123!",
+    "lastName": "Шашков",
+    "firstName": "Аристарх",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "15",
+      "month": "февраль",
+      "year": "1904"
+    }
+  },
+  {
+    "phone": "79990955168",
+    "email": "test990955168@test.ru",
+    "password": "test123!",
+    "lastName": "Суханов",
+    "firstName": "Андрон",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "12",
+      "month": "апрель",
+      "year": "1926"
+    }
+  },
+  {
+    "phone": "79990955169",
+    "email": "test990955169@test.ru",
+    "password": "test123!",
+    "lastName": "Блохин",
+    "firstName": "Виталий",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "20",
+      "month": "сентябрь",
+      "year": "1908"
+    }
+  },
+  {
+    "phone": "79990955170",
+    "email": "test990955170@test.ru",
+    "password": "test123!",
+    "lastName": "Доронин",
+    "firstName": "Сила",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "19",
+      "month": "март",
+      "year": "1993"
+    }
+  },
+  {
+    "phone": "79990955172",
+    "email": "test990955172@test.ru",
+    "password": "test123!",
+    "lastName": "Горбунов",
+    "firstName": "Василий",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "25",
+      "month": "июль",
+      "year": "1910"
+    }
+  },
+  {
+    "phone": "79990955173",
+    "email": "test990955173@test.ru",
+    "password": "test123!",
+    "lastName": "Котов",
+    "firstName": "Кир",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "1",
+      "month": "январь",
+      "year": "1971"
+    }
+  },
+  {
+    "phone": "79990955174",
+    "email": "test990955174@test.ru",
+    "password": "test123!",
+    "lastName": "Самсонов",
+    "firstName": "Афанасий",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "14",
+      "month": "июнь",
+      "year": "1917"
+    }
+  },
+  {
+    "phone": "79990955175",
+    "email": "test990955175@test.ru",
+    "password": "test123!",
+    "lastName": "Лебедев",
+    "firstName": "Аверкий",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "27",
+      "month": "октябрь",
+      "year": "1916"
+    }
+  },
+  {
+    "phone": "79990955176",
+    "email": "test990955176@test.ru",
+    "password": "test123!",
+    "lastName": "Блинов",
+    "firstName": "Агафон",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "9",
+      "month": "март",
+      "year": "1936"
+    }
+  },
+  {
+    "phone": "79990955177",
+    "email": "test990955177@test.ru",
+    "password": "test123!",
+    "lastName": "Большаков",
+    "firstName": "Нифонт",
+    "midName": "Тестович",
+    "sex": "мужчина",
+    "birthDate": {
+      "day": "12",
+      "month": "июль",
+      "year": "1986"
+    }
+  }
+]

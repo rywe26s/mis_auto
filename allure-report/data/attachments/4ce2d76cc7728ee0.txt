@@ -1,0 +1,75 @@
+[TokenManager] Кэш для роли 'admin' пуст. Выполняю логин...
+[AdminApi] Меняю INTEGRATION_TYPE на "DEFAULT"...
+[API] >> GET /api/setting
+[API]    Params: [Empty]
+[API] << 200 [GET /api/setting]
+[API]    Response Body: [
+  {
+    "key": "PATIENT_RECORD_AUDIO_ONLY",
+    "value": "FALSE"
+  },
+  {
+    "key": "CAPTCHA_SELFHOSTED_FONT_STYLE_RANDOM",
+    "value": "TRUE"
+  },
+  {
+    "key": "CAPTCHA_SELFHOSTED_STRAY_COUNT",
+    "value": "10"
+  },
+  {
+    "key": "PASSWORD_MIN_LENGTH",
+    "value": "4"
+  },
+  {
+    "key": "YANDEX_MAPS_API_KEY",
+    "value": "e220c97e-581f-4969-8837-ef7ba2d38091"
+  },
+  {
+    "key": "PATIENT_COMMUNICATION_CHANNELS",
+    "value": ", EMAIL, PUSH, SMS"
+  },
+  {
+    "key": "FEEDBACK_QUALITY_... [TRUNCATED]
+[API] >> PUT /api/setting
+[API]    Payload: {
+  "settings": [
+    {
+      "key": "PATIENT_RECORD_AUDIO_ONLY",
+      "value": "FALSE"
+    },
+    {
+      "key": "CAPTCHA_SELFHOSTED_FONT_STYLE_RANDOM",
+      "value": "TRUE"
+    },
+    {
+      "key": "CAPTCHA_SELFHOSTED_STRAY_COUNT",
+      "value": "10"
+    },
+    {
+      "key": "PASSWORD_MIN_LENGTH",
+      "value": "4"
+    },
+    {
+      "key": "YANDEX_MAPS_API_KEY",
+      "value": "e220c97e-581f-4969-8837-ef7ba2d38091"
+    },
+    {
+      "key": "PATIENT_COMMUNICATION_CHANNELS",
+      "value... [TRUNCATED]
+[API] << 204 [PUT /api/setting]
+[API]    Response Body: [Empty]
+[AdminApi] INTEGRATION_TYPE успешно установлен
+[Worker 0] Нарезал себе 10 пациентов
+[DatabaseHelper] Устанавливаю прямое подключение к 172.20.0.88...
+Зарегистрированный пациент: {
+  phone: '79908478448',
+  email: 'test908478448@test.ru',
+  password: 'test123!',
+  lastName: 'Костин',
+  firstName: 'Осип',
+  midName: 'Тестович',
+  sex: 'мужчина',
+  birthDate: { day: '8', month: 'май', year: '1925' }
+}
+[DatabaseHelper] Пул соединений с БД закрыт.
+[TokenManager] Ресурсы очищены

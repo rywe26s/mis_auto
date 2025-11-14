@@ -15,14 +15,19 @@ export interface LogEntry {
 export class LogsRepository {
     constructor(private db: DatabaseHelper) { }
 
-    async findLatestLogByRequestType(requestType: string): Promise<LogEntry | null> {
-        const query = 'SELECT * FROM mis_log WHERE request_type = $1 ORDER BY timestamp_ DESC LIMIT 1';
-        const result = await this.db.query<LogEntry>(query, [requestType]);
+    async findLatestLogByParam(requestType: string, paramValue: string): Promise<LogEntry | null> {
+        const query = `
+        SELECT * FROM mis_log
+        WHERE request_type = $1
+        AND request_params LIKE $2
+        ORDER BY timestamp_ DESC
+        LIMIT 1`;
+
+        const result = await this.db.query<LogEntry>(query, [requestType, `%${paramValue}%`]);
 
         if (result.rowCount === 0) {
             return null;
         }
-
         return result.rows[0];
     }
 }

@@ -1,25 +1,63 @@
-import { APIRequestContext, expect } from '@playwright/test';
+import { APIRequestContext } from '@playwright/test';
+import { BaseAPI } from './BaseAPI';
 
-type AdminSettings = {
-  enableSuperButton?: boolean;
-};
+interface ApiSetting {
+  key: string;
+  value: string;
+}
 
-export class AdminApi {
-  constructor(private apiContext: APIRequestContext) {}
+interface SettingsPayload {
+  settings: ApiSetting[];
+}
 
-  async applySettings(settings: AdminSettings): Promise<void> {
-    console.log('[AdminApi] Устанавливаю новые настройки:', settings);
-    const setResponse = await this.apiContext.post('/api/admin/settings', {
-      data: settings,
-    });
-
-    expect.soft(setResponse.ok(), 'Запрос на установку настроек должен быть успешным').toBeTruthy();
-
-    console.log('[AdminApi] Применяю настройки...');
-    const reloadResponse = await this.apiContext.post('/api/admin/settings/reload');
-    expect.soft(reloadResponse.ok(), 'Запрос на применение настроек должен быть успешным').toBeTruthy();
-    
-    console.log('[AdminApi] Настройки успешно применены.');
+export class AdminApi extends BaseAPI {
+  constructor(apiContext: APIRequestContext) {
+    super(apiContext);
   }
 
+  async getAllSettings(): Promise<ApiSetting[]> {
+    const responseJson = await this.get('/api/setting');
+    return responseJson as ApiSetting[];
+  }
+
+  async updateAllSettings(settingsArray: ApiSetting[]): Promise<void> {
+    const payload: SettingsPayload = {
+      settings: settingsArray
+    };
+    await this.put('/api/setting', {
+      data: payload
+    });
+  }
+
+  async setIntegrationType(newType: 'GEMOTEST' | 'DEFAULT' | string) {
+    console.log(`[AdminApi] Меняю INTEGRATION_TYPE на "${newType}"...`);
+    const currentSettingsArray = await this.getAllSettings();
+
+    const settingToChange = currentSettingsArray.find(
+      s => s.key === 'INTEGRATION_TYPE'
+    );
+
+    if (!settingToChange) {
+      throw new Error('[AdminApi] Не удалось найти ключ "INTEGRATION_TYPE" в настройках');
+    }
+
+    settingToChange.value = newType;
+    await this.updateAllSettings(currentSettingsArray);
+    console.log(`[AdminApi] INTEGRATION_TYPE успешно установлен`);
+  }
+
+  async updatePatientBalance(patientId: string, amount: number, comment: string = "пополнение для автотестов") {
+    const payload = {
+      amount: amount,
+      comment: comment
+    };
+
+    console.log(`[AdminApi] Пополняю баланс (${amount}) для пациента ${patientId}...`);
+
+    const responseJson = await this.post(`/api/admin/patient/${patientId}/updateBalance`,
+      { data: payload }
+    );
+
+    return responseJson;
+  }
 }

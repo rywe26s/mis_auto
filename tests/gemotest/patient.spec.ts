@@ -1,86 +1,77 @@
-import { expect, test } from "../../fixtures/fixtures";
-import { DataGenerator } from "../../test-data/DataGenerator";
-import { parseRequestParams } from "../../utils/parsers";
-import { step, description, tags, severity, owner, attachment } from 'allure-js-commons';
+import { test } from "../../fixtures/fixtures";
+import { description } from 'allure-js-commons';
+import { descriptions } from '../../test-data/test-cases';
+import { ApiErrorResponse, BookingApiResponse } from "../../lib/api/types";
+
+const doctorName = process.env.GEMOTEST_DOCTOR_NAME!;
+const freeTreatmentId = process.env.GEMOTEST_FREE_TREATMENT_ID!;
+const paidTreatmentId = process.env.GEMOTEST_PAID_TREATMENT_ID;
 
 
-test.describe('EXPERT', () => {
+test.describe('Гемотест', () => {
+  test.describe.configure({ mode: 'serial' });
+  let appointmentIdForCancel: string;
+  let appointmentIdForMisTest: string;
+  let slotIdForMisTest: string;
 
-  test('Проверка авторизации и получения консультаций', async ({ patientSession }) => {
+  test.beforeAll(async ({ adminApi }) => {
+    await adminApi.setIntegrationType('GEMOTEST');
+  });
 
-    await description(`
-      1) Авторизоваться и перейти в список консультаций
-      2) Получается список консультаций через api`);
+  
+  test('E2E-REG-1: Успешная регистрация', async ({ guest, patientData, logVerifier }) => {
+    description(descriptions["E2E-REG-1"]);
+    await guest.registrationPage.register(patientData);
+    await logVerifier.assertSuccessfulRegistration(patientData);
+  });
 
-    await owner('Иван Иванов');
-    await tags('smoke', 'auth');
-    await severity('critical');
+  test('API-GEM-REG-1: Успешная регистрация', async ({ guestApi, patientData, logVerifier }) => {
+    description(descriptions["API-GEM-REG-1"]);
+    await guestApi.register(patientData)
+    await logVerifier.assertSuccessfulRegistration(patientData);
+  });
 
-    await step('1. Авторизоваться и перейти в список консультаций', async () => {
-      await patientSession.appointmentsPage.goto();
-    })
+  test('E2E-BOOK-1: Успешная запись на прием', async ({ patientSession, freeSlotGemotest, logVerifier, eternalPatientData }) => {
+    description(descriptions["E2E-BOOK-1"]);
+    const patientId = eternalPatientData.patientId!;
+    const { bookingResponse, slotId } = await patientSession.bookingPage.bookAppointment(doctorName, freeSlotGemotest);
+    await logVerifier.assertSuccessfulBooking(bookingResponse, patientId, slotId, freeTreatmentId);
+  });
 
-    await step('2. Получается список консультаций через api', async () => {
-      const response = await patientSession.api.getPatientAppoinment();
-      console.log(response)
-    })
+  test('API-GEM-BOOK-1: Успешная запись на платный прием', async ({ patientApi, eternalPatientData, freeSlotGemotest, logVerifier }) => {
+    description(descriptions["API-GEM-BOOK-1"]);
+    const patientId = eternalPatientData.patientId!;
+    const bookingResponse = await patientApi.bookAppointment(freeSlotGemotest.id, paidTreatmentId) as BookingApiResponse;
+    await logVerifier.assertSuccessfulBooking(bookingResponse, patientId, freeSlotGemotest.id, paidTreatmentId);
+    appointmentIdForCancel = bookingResponse.id;
+  });
 
-  })
+  test('API-GEM-BOOK-2: Успешная запись на бесплатный прием', async ({ patientApi, eternalPatientData, freeSlotGemotest, logVerifier }) => {
+    description(descriptions["API-GEM-BOOK-2"]);
+    const patientId = eternalPatientData.patientId!;
+    const bookingResponse = await patientApi.bookAppointment(freeSlotGemotest.id, freeTreatmentId) as BookingApiResponse;
+    await logVerifier.assertSuccessfulBooking(bookingResponse, patientId, freeSlotGemotest.id, freeTreatmentId);
+    appointmentIdForMisTest = bookingResponse.id;
+    slotIdForMisTest = freeSlotGemotest.id;
+  });
 
-  test('Проверка падения', async () => {
+  test('API-GEM-CANCEL-1: Успешная отмена приема пациентом', async ({ patientApi, logVerifier }) => {
+    description(descriptions["API-GEM-CANCEL-1"]);
+    await patientApi.cancelAppointment(appointmentIdForCancel, "Запишусь на другое время");
+    await logVerifier.assertSuccessfulCancellation(appointmentIdForCancel, "ОтказПациента");
+  });
 
-    await description(`1. Запустить провальный тест`);
-    
-    await owner('Иван Орлов');
-    await tags('smoke', 'auth');
-    await severity('critical');
+  test('API-GEM-BOOK-3: Слот уже занят в МИС', async ({ adminApi, patientApi, eternalPatientData, logVerifier }) => {
+    description("Проверка ошибки, когда слот свободен у нас, но занят в МИС");
+    await adminApi.setIntegrationType('DEFAULT');
+    await patientApi.cancelAppointment(appointmentIdForMisTest, 'Запишусь на другое время');
+    await adminApi.setIntegrationType('GEMOTEST');
+    const errorResponse = await patientApi.bookAppointment(slotIdForMisTest, freeTreatmentId, true) as ApiErrorResponse;
+    await logVerifier.assertMisSlotIsBusy(errorResponse, slotIdForMisTest, eternalPatientData.patientId!);
+  });
 
-    await step('3. Провальный тест', async () => {
-      expect(true).toBe(false);
+  /*   test.afterAll(async ({ adminApi }) => {
+      await adminApi.setIntegrationType('DEFAULT');
     });
-
-  })
-
-  /*   test('Гость видит публичные новости', async ({ sshLogsRepo }) => {
-      const someData = await sshLogsRepo.findLatestLogByRequestType('patCreate');
-      console.log('Запись из SSH БД:', someData);
-  
-    });
-  
-    test('Проверяем логи в основной (прямой) БД', async ({ directLogsRepo }) => {
-  
-      const patientData = {
-        firstName: 'Иван',
-        lastName: 'Лютиков',
-        middleName: 'Владимрович',
-        birthDate: '1982-11-03',
-        sex: 'm',
-        phone: '79827521415'
-      };
-  
-      const logEntry = await directLogsRepo.findLatestLogByRequestType('registerClient');
-  
-      expect(logEntry, 'Запись в логе должна быть найдена').not.toBeNull();
-  
-      expect(logEntry!.response_code).toBe(200);
-  
-      const successMessage = JSON.parse(logEntry!.success_message!);
-      expect(successMessage.code).toBe('SUCCESS');
-  
-      const externalId = successMessage.external_patient_id;
-      console.log('Найден external_patient_id:', externalId);
-  
-      expect(externalId).toBeDefined();
-  
-      const actualParams = parseRequestParams(logEntry!.request_params);
-      console.log('Распарсенные параметры:', actualParams);
-  
-      expect(actualParams.lastName).toBe(patientData.lastName);
-      expect(actualParams.firstName).toBe(patientData.firstName);
-      expect(actualParams.middleName).toBe(patientData.middleName);
-      expect(actualParams.phone).toContain(patientData.phone);
-      expect(actualParams.sex).toContain(patientData.sex);
-      expect(actualParams.birthday).toContain(patientData.birthDate);
-    }); */
-
+   */
 });
